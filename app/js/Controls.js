@@ -16,7 +16,6 @@ class Controls {
                 case "ArrowUp": this.goForward = true; break;
                 case "ArrowDown": this.goReverse = true; break;
             }
-            console.table(this)
         }
 
         document.onkeyup = (ev) => {
@@ -24,9 +23,8 @@ class Controls {
                 case "ArrowLeft": this.goLeft = false; break;
                 case "ArrowRight": this.goRight = false; break;
                 case "ArrowUp": this.goForward = false; break;
-                case "ArrowDown": this.goRevers = false; break;
+                case "ArrowDown": this.goReverse = false; break;
             }
-            console.table(this)
         }
     }
 }
