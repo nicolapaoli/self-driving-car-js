@@ -11,6 +11,17 @@ class Road {
 
         this.top = -infinity
         this.bottom = infinity
+
+        const topLeft = {x: this.left, y: this.top}
+        const topRight = {x: this.right, y: this.top}
+        const bottomLeft = {x: this.left, y: this.bottom}
+        const bottomRight = {x: this.right, y: this.bottom}
+
+        // Defining borders
+        this.borders = [
+            [topLeft, bottomLeft],
+            [topRight, bottomRight]
+        ]
     }
 
     getLaneCenter(laneIndex) {
@@ -26,7 +37,7 @@ class Road {
         context.strokeStyle = 'white'
 
         // write intermediate lines
-        for (let lane = 0; lane <= this.laneCount; lane++) {
+        for (let lane = 1; lane <= this.laneCount-1; lane++) {
             // Using linear interpolation to calculate the width of each line
             const x = lerp(
                 this.left,
@@ -34,16 +45,21 @@ class Road {
                 lane / this.laneCount
             )
 
-            if (lane > 0 && lane < this.laneCount) {
-                context.setLineDash([20,20])
-            } else {
-                context.setLineDash([])
-            }
+            context.setLineDash([20,20])
             context.beginPath()
             context.moveTo(x, this.top)
             context.lineTo(x, this.bottom)
             context.stroke()
-
         }
+
+        // for each border draw them
+        context.setLineDash([])
+        this.borders.forEach(border => {
+            context.beginPath()
+            context.moveTo(border[0].x, border[0].y)
+            context.lineTo(border[1].x, border[1].y)
+            context.stroke()
+        })
+
     }
 }

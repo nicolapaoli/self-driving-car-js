@@ -12,12 +12,14 @@ class Car {
 
         this.angle = 0 // Rotation angle of the car
 
+        this.sensor = new Sensor(this)
         this.controls = new Controls()
     }
 
 
     update() {
         this.#move()
+        this.sensor.update()
     }
 
     #move() {
@@ -56,6 +58,7 @@ class Car {
         context.save()
         context.translate(this.x, this.y)
         context.rotate(-this.angle)
+
         context.beginPath()
         context.rect(
             -this.width/2,
@@ -64,5 +67,9 @@ class Car {
             this.height
         )
         context.fill();
+
+        context.restore()
+
+        this.sensor.draw(context)
     }
 }
