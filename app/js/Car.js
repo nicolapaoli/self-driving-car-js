@@ -12,6 +12,8 @@ class Car {
 
         this.angle = 0 // Rotation angle of the car
 
+        this.damaged = false
+
         this.sensor = new Sensor(this)
         this.controls = new Controls()
     }
@@ -20,7 +22,17 @@ class Car {
     update(roadBorders) {
         this.#move()
         this.polygon = this.#createPolygon()
+        this.damaged = this.#assessDamage(roadBorders)
         this.sensor.update(roadBorders)
+    }
+
+    #assessDamage(roadBorders) {
+        for (let b = 0; b < roadBorders.length; b++) {
+            if (polysIntersect(this.polygon, roadBorders[b])) {
+                return true
+            }
+        }
+        return false
     }
 
     #createPolygon() {
@@ -109,8 +121,13 @@ class Car {
         // )
         // context.fill();
 
+        if (this.damaged) {
+            context.fillStyle = "red"
+        } else {
+            context.fillStyle = "green"
+        }
+
         context.beginPath()
-        context.fillStyle = 'red'
         // context.strokeStyle = 'black'
 
         context.moveTo(this.polygon[0].x, this.polygon[0].y)
